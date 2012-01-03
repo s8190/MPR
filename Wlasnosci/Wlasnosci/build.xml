@@ -1,0 +1,47 @@
+<project>
+
+	<property name="src" location="src" />
+	<property name="bin" location="bin" />
+	<property name="jar" location="jar" />
+	<property name="lib" value="lib" />
+
+	<path id="classpath">
+		<fileset dir="${lib}" includes="**/*.jar" />
+		<pathelement location="${bin}" />
+	</path>
+
+	<target name="init">
+		<mkdir dir="${bin}" />
+		<mkdir dir="${jar}" />
+	</target>
+
+	<target name="compile">
+		<javac srcdir="${src}" destdir="${bin}" classpathref="classpath" />
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="${jar}" />
+		<jar destfile="${jar}/wlasciciele.jar" basedir="${bin}">
+			<manifest>
+				<attribute name="Main-Class" value="pl.mpr.wlascnosci.tui.AppStart" />
+				<attribute name="Class-Path" value="${bin}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="run" depends="jar">
+		<java classname="pl.mpr.wlascnosci.tui.AppStart" fork="true">
+			<classpath>
+				<path refid="classpath" />
+				<path location="${jar}/wlasciciele.jar" />
+			</classpath>
+		</java>
+
+	</target>
+
+	<target name="clean">
+		<delete dir="${bin}" />
+		<delete dir="${jar}" />
+	</target>
+
+</project>
